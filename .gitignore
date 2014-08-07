@@ -54,6 +54,7 @@ hs_err_pid*
 .idea/
 # if you remove the above rule, at least ignore user-specific stuff:
 .idea/workspace.xml
+app/build/
 #.idea/misc.xml
 #.idea/vcs.xml
 #.idea/*
