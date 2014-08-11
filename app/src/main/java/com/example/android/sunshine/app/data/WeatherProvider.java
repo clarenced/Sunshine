@@ -214,7 +214,6 @@ public class WeatherProvider extends ContentProvider {
     public int delete(Uri uri, String selection, String[] selectionArgs) {
 
         final int match = uriMatcher.match(uri);
-        Uri returnUri = null;
         int numberOfRows = 0;
 
         switch(match){
@@ -227,7 +226,9 @@ public class WeatherProvider extends ContentProvider {
 
         }
 
-        getContext().getContentResolver().notifyChange(returnUri, null);
+        if(null == selection || numberOfRows != 0){
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
 
         return numberOfRows;
     }
@@ -235,7 +236,6 @@ public class WeatherProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         final int match = uriMatcher.match(uri);
-        Uri returnUri = null;
         int numberOfRows = 0;
 
         switch(match){
@@ -251,7 +251,10 @@ public class WeatherProvider extends ContentProvider {
 
         }
 
-        getContext().getContentResolver().notifyChange(returnUri, null);
+        if(numberOfRows != 0){
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
         return numberOfRows;
     }
 
