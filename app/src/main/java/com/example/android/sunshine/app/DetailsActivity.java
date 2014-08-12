@@ -184,9 +184,9 @@ public class DetailsActivity extends ActionBarActivity {
                     data.getString(data.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_SHORT_DESC));
 
             boolean isMetric = Utility.isMetric(getActivity());
-            String high = Utility.formatTemperature(
+            String high = Utility.formatTemperature(getActivity(),
                     data.getDouble(data.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_MAX_TEMP)), isMetric);
-            String low = Utility.formatTemperature(
+            String low = Utility.formatTemperature(getActivity(),
                     data.getDouble(data.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_MIN_TEMP)), isMetric);
 
             forecast = String.format("%s - %s - %s/%s",

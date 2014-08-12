@@ -40,7 +40,7 @@ import java.util.List;
 public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private static int FORECAST_LOADER = 0;
-    private SimpleCursorAdapter mForecastAdapter;
+    private ForecastAdapter mForecastAdapter;
 
     private String mLocation;
 
@@ -103,26 +103,9 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
         // The SimpleCursorAdapter will take data from the database through the
         // Loader and use it to populate the ListView it's attached to.
-        mForecastAdapter = new SimpleCursorAdapter(
-                getActivity(),
-                R.layout.list_item_forecast,
-                null,
-                // the column names to use to fill the textviews
-                new String[]{WeatherContract.WeatherEntry.COLUMN_DATETEXT,
-                        WeatherContract.WeatherEntry.COLUMN_SHORT_DESC,
-                        WeatherContract.WeatherEntry.COLUMN_MAX_TEMP,
-                        WeatherContract.WeatherEntry.COLUMN_MIN_TEMP
-                },
-                // the textviews to fill with the data pulled from the columns above
-                new int[]{R.id.list_item_date_textview,
-                        R.id.list_item_forecast_textview,
-                        R.id.list_item_high_textview,
-                        R.id.list_item_low_textview
-                },
-                0
-        );
+        mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
 
-        mForecastAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+       /* mForecastAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
                 boolean isMetric = Utility.isMetric(getActivity());
@@ -140,7 +123,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                 }
                 return false;
             }
-        });
+        });*/
 
         listView.setAdapter(mForecastAdapter);
 
@@ -148,7 +131,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final Adapter adapter = parent.getAdapter();
-                final SimpleCursorAdapter cursorAdapter = (SimpleCursorAdapter) adapter;
+                final ForecastAdapter cursorAdapter = (ForecastAdapter) adapter;
                 final Cursor cursor = cursorAdapter.getCursor();
 
                 if(null != cursor && cursor.moveToPosition(position)){
