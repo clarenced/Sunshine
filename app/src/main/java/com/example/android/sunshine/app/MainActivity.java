@@ -18,14 +18,23 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
 
+    private boolean mTwoPane;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new ForecastFragment())
-                    .commit();
+
+        if(findViewById(R.id.weather_detail_container) != null){
+            //
+            mTwoPane = true;
+
+            if(savedInstanceState == null){
+                getSupportFragmentManager().beginTransaction().replace(R.id.weather_detail_container,
+                        new DetailsActivity.DetailsFragment()).commit();
+            }
+        } else {
+            mTwoPane = false;
         }
     }
 
