@@ -20,7 +20,7 @@
             android:id="@+id/list_item_date_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
+            android:textAlignment="gravity"
             android:text="Tomorrow"/>
         <TextView
             android:id="@+id/list_item_forecast_textview"

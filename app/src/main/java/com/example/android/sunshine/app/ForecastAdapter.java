@@ -44,8 +44,6 @@ public class ForecastAdapter extends CursorAdapter {
             case VIEW_TYPE_FUTURE : layoutId = R.layout.list_item_forecast; break;
         }
 
-
-
         final View view = LayoutInflater.from(context).inflate(layoutId, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         view.setTag(viewHolder);
