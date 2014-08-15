@@ -17,10 +17,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.android.sunshine.app.R;
-import com.example.android.sunshine.app.Utility;
 import com.example.android.sunshine.app.data.WeatherContract;
 
 /**
@@ -39,6 +40,7 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
     private static final String LOG_TAG = DetailsFragment.class.getSimpleName();
     private ShareActionProvider shareActionProvider;
 
+
     private static final String[] FORECAST_COLUMNS = {
             WeatherContract.WeatherEntry.TABLE_NAME + "." + WeatherContract.WeatherEntry._ID,
             WeatherContract.WeatherEntry.COLUMN_DATETEXT,
@@ -48,7 +50,8 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
             WeatherContract.WeatherEntry.COLUMN_WIND_SPEED,
             WeatherContract.WeatherEntry.COLUMN_PRESSURE,
             WeatherContract.WeatherEntry.COLUMN_HUMIDITY,
-            WeatherContract.WeatherEntry.COLUMN_DEGREES
+            WeatherContract.WeatherEntry.COLUMN_DEGREES,
+            WeatherContract.WeatherEntry.COLUMN_WEATHER_ID
     };
 
     public DetailsFragment() {
@@ -63,8 +66,7 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
         if(intent != null && intent.hasExtra(Intent.EXTRA_TEXT)){
             forecast = intent.getStringExtra(Intent.EXTRA_TEXT);
             ((TextView)rootView.findViewById(R.id.detail_forecast_textview)).setText(forecast);
-            //final TextView textView = (TextView)rootView.findViewById(R.id.forecast_detail);
-            //textView.setText(forecast);
+
         }
         return rootView;
     }
@@ -81,17 +83,25 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        getLoaderManager().initLoader(DETAIL_LOADER_ID, null, this);
+        super.onActivityCreated(savedInstanceState);
+
+
         if(savedInstanceState != null){
             location = savedInstanceState.getString(LOCATION_KEY);
         }
-        super.onActivityCreated(savedInstanceState);
+        final Bundle arguments = getArguments();
+        if(arguments != null && arguments.containsKey(DATE_KEY)){
+            getLoaderManager().initLoader(DETAIL_LOADER_ID, null, this);
+        }
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(null != location && !location.equals(Utility.getPreferredLocation(getActivity()))){
+        final Bundle arguments = getArguments();
+        if(arguments != null && arguments.containsKey(DATE_KEY)
+                && null != location && !location.equals(Utility.getPreferredLocation(getActivity()))){
             getLoaderManager().restartLoader(DETAIL_LOADER_ID, null, this);
         }
     }
@@ -118,7 +128,7 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
         if (intent == null || !intent.hasExtra(DATE_KEY)) {
             return null;
         }
-        String forecastDate = intent.getStringExtra(DATE_KEY);
+        String forecastDate = getArguments().getString(DATE_KEY);
 
         // Sort order:  Ascending, by date.
         String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATETEXT + " ASC";
@@ -145,6 +155,10 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         Log.v(LOG_TAG, "In onLoadFinished");
         if (!data.moveToFirst()) { return; }
+
+        final int weatherId =
+                data.getInt(data.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_WEATHER_ID));
+        int weatherDrawable = Utility.getArtResourceForWeatherCondition(weatherId);
 
         String dateString =
                 data.getString(data.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_DATETEXT));
@@ -188,10 +202,23 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
         ((TextView) getView().findViewById(R.id.detail_high_textview)).setText(high);
         ((TextView) getView().findViewById(R.id.detail_pressure)).setText(pressure);
 
+        ImageView forecastIcon = (ImageView) getView().findViewById(R.id.forecast_icon);
+        forecastIcon.setImageResource(weatherDrawable);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         getLoaderManager().restartLoader(DETAIL_LOADER_ID, null, this);
+    }
+
+
+    public static DetailsFragment newFragment(String date){
+        final DetailsFragment detailsFragment = new DetailsFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putString(DATE_KEY, date);
+
+        detailsFragment.setArguments(bundle);
+        return detailsFragment;
     }
 }

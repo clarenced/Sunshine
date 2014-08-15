@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements ForecastFragment.Callback {
 
     private boolean mTwoPane;
 
@@ -25,16 +25,12 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if(findViewById(R.id.weather_detail_container) != null){
-            //
-            mTwoPane = true;
-
+        mTwoPane  = findViewById(R.id.weather_detail_container) != null;
+        if(mTwoPane){
             if(savedInstanceState == null){
                 getSupportFragmentManager().beginTransaction().replace(R.id.weather_detail_container,
                         new DetailsFragment()).commit();
             }
-        } else {
-            mTwoPane = false;
         }
     }
 
@@ -58,5 +54,18 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemSelected(String date) {
+        if(!mTwoPane){
+            Intent intent = new Intent(this, DetailsActivity.class);
+            intent.putExtra(DetailsFragment.DATE_KEY, date);
+            startActivity(intent);
+        } else {
+            final DetailsFragment detailsFragment = DetailsFragment.newFragment(date);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.weather_detail_container, detailsFragment).commit();
+        }
     }
 }

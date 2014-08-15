@@ -58,7 +58,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             WeatherContract.WeatherEntry.COLUMN_SHORT_DESC,
             WeatherContract.WeatherEntry.COLUMN_MAX_TEMP,
             WeatherContract.WeatherEntry.COLUMN_MIN_TEMP,
-            WeatherContract.LocationEntry.COLUMN_LOCATION_SETTINGS
+            WeatherContract.LocationEntry.COLUMN_LOCATION_SETTINGS,
+            WeatherContract.WeatherEntry.COLUMN_WEATHER_ID
     };
 
     // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
@@ -69,6 +70,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     public static final int COL_WEATHER_MAX_TEMP = 3;
     public static final int COL_WEATHER_MIN_TEMP = 4;
     public static final int COL_LOCATION_SETTING = 5;
+    public static final int COL_WEATHER_CONDITION_ID = 6;
 
     public ForecastFragment() {
     }
@@ -126,7 +128,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         });*/
 
         listView.setAdapter(mForecastAdapter);
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -135,10 +136,11 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                 final Cursor cursor = cursorAdapter.getCursor();
 
                 if(null != cursor && cursor.moveToPosition(position)){
-                    Intent intent = new Intent(getActivity(), DetailsActivity.class);
+                    /*Intent intent = new Intent(getActivity(), DetailsActivity.class);
                     intent.putExtra(DetailsFragment.DATE_KEY, cursor.getString(COL_WEATHER_DATE));
                     //intent.putExtra(Intent.EXTRA_TEXT, forecast);
-                    startActivity(intent);
+                    startActivity(intent);*/
+                    ((Callback)getActivity()).onItemSelected(cursor.getString(COL_WEATHER_DATE));
                 }
 
 
@@ -239,5 +241,18 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mForecastAdapter.swapCursor(null);
+    }
+
+
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface Callback {
+        /**
+         * Callback for when an item has been selected.
+         */
+        public void onItemSelected(String date);
     }
 }
