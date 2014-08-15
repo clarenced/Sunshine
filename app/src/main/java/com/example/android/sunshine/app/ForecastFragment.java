@@ -72,6 +72,11 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     public static final int COL_LOCATION_SETTING = 5;
     public static final int COL_WEATHER_CONDITION_ID = 6;
 
+
+    private int mPosition = -1;
+    private static final String CURRENT_POSITION = "CURRENT_POSITION";
+    private ListView listView;
+
     public ForecastFragment() {
     }
 
@@ -96,16 +101,20 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             final Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         List<String> strings = new ArrayList<String>();
 
-        ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
+        listView = (ListView) rootView.findViewById(R.id.listview_forecast);
 
         // The SimpleCursorAdapter will take data from the database through the
         // Loader and use it to populate the ListView it's attached to.
         mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
+
+        if(savedInstanceState != null && savedInstanceState.containsKey(CURRENT_POSITION)){
+            mPosition = savedInstanceState.getInt(CURRENT_POSITION);
+        }
 
        /* mForecastAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override
@@ -128,6 +137,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         });*/
 
         listView.setAdapter(mForecastAdapter);
+
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -140,16 +151,22 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                     intent.putExtra(DetailsFragment.DATE_KEY, cursor.getString(COL_WEATHER_DATE));
                     //intent.putExtra(Intent.EXTRA_TEXT, forecast);
                     startActivity(intent);*/
+                    mPosition = position;
                     ((Callback)getActivity()).onItemSelected(cursor.getString(COL_WEATHER_DATE));
                 }
-
-
             }
         });
-
         return rootView;
     }
 
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if(mPosition != ListView.INVALID_POSITION){
+            outState.putInt(CURRENT_POSITION, mPosition);
+        }
+        super.onSaveInstanceState(outState);
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -236,6 +253,9 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mForecastAdapter.swapCursor(data);
+        if(mPosition != ListView.INVALID_POSITION){
+            listView.setSelection(mPosition);
+        }
     }
 
     @Override
