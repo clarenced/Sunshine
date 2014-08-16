@@ -14,7 +14,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,9 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.sunshine.app.data.WeatherContract;
@@ -74,6 +71,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
 
     private int mPosition = -1;
+    private boolean mUseTodayLayout;
+
     private static final String CURRENT_POSITION = "CURRENT_POSITION";
     private ListView listView;
 
@@ -84,11 +83,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
     }
 
     @Override
@@ -103,15 +97,12 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
-        List<String> strings = new ArrayList<String>();
-
         listView = (ListView) rootView.findViewById(R.id.listview_forecast);
 
         // The SimpleCursorAdapter will take data from the database through the
         // Loader and use it to populate the ListView it's attached to.
         mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
-
+        //mForecastAdapter.setUseOfToday(mUseOfToday);
         if(savedInstanceState != null && savedInstanceState.containsKey(CURRENT_POSITION)){
             mPosition = savedInstanceState.getInt(CURRENT_POSITION);
         }
@@ -136,8 +127,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             }
         });*/
 
-        listView.setAdapter(mForecastAdapter);
 
+        listView.setAdapter(mForecastAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -204,8 +195,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
         getLoaderManager().initLoader(FORECAST_LOADER, null, this);
+        super.onActivityCreated(savedInstanceState);
     }
 
     private void updateWeather(){
@@ -220,6 +211,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
         // To only show current and future dates, get the String representation for today,
         // and filter the query to return weather only for dates after or including today.
         // Only return data after today.
@@ -252,9 +244,18 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
         mForecastAdapter.swapCursor(data);
         if(mPosition != ListView.INVALID_POSITION){
-            listView.setSelection(mPosition);
+            listView.smoothScrollToPosition(mPosition);
+        }
+
+    }
+
+    public void setUseTodayLayout(boolean useTodayLayout) {
+        mUseTodayLayout = useTodayLayout;
+        if (mForecastAdapter != null) {
+            mForecastAdapter.setUseTodayLayout(mUseTodayLayout);
         }
     }
 

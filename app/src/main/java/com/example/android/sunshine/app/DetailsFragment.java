@@ -36,6 +36,7 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
 
     private String forecast;
     private String location;
+    private String mDateStr;
     private static final String SHARE_TAG = " #sunshine";
     private static final String LOG_TAG = DetailsFragment.class.getSimpleName();
     private ShareActionProvider shareActionProvider;
@@ -54,6 +55,7 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
             WeatherContract.WeatherEntry.COLUMN_WEATHER_ID
     };
 
+
     public DetailsFragment() {
         setHasOptionsMenu(true);
     }
@@ -62,6 +64,16 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
+
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            mDateStr = arguments.getString(DATE_KEY);
+        }
+
+        if (savedInstanceState != null) {
+            location = savedInstanceState.getString(LOCATION_KEY);
+        }
+
         final Intent intent = getActivity().getIntent();
         if(intent != null && intent.hasExtra(Intent.EXTRA_TEXT)){
             forecast = intent.getStringExtra(Intent.EXTRA_TEXT);
@@ -128,13 +140,14 @@ public class DetailsFragment extends Fragment implements LoaderManager.LoaderCal
         if (intent == null || !intent.hasExtra(DATE_KEY)) {
             return null;
         }
-        String forecastDate = getArguments().getString(DATE_KEY);
+
 
         // Sort order:  Ascending, by date.
         String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATETEXT + " ASC";
 
+        final String preferredLocation = Utility.getPreferredLocation(getActivity());
         Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
-                Utility.getPreferredLocation(getActivity()), forecastDate);
+                preferredLocation, mDateStr);
         Log.v(LOG_TAG, weatherForLocationUri.toString());
 
         location = Utility.getPreferredLocation(getActivity());

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,12 +27,19 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
         setContentView(R.layout.activity_main);
 
         mTwoPane  = findViewById(R.id.weather_detail_container) != null;
+
         if(mTwoPane){
             if(savedInstanceState == null){
-                getSupportFragmentManager().beginTransaction().replace(R.id.weather_detail_container,
-                        new DetailsFragment()).commit();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.weather_detail_container, new DetailsFragment())
+                        .commit();
             }
         }
+
+        final ForecastFragment forecastFragment =
+                (ForecastFragment)getSupportFragmentManager()
+                        .findFragmentById(R.id.fragment_forecast);
+        forecastFragment.setUseTodayLayout(!mTwoPane);
     }
 
 
