@@ -1070,7 +1070,6 @@ containing a value of this type.
         public static final int abc_simple_decor=0x7f040017;
         public static final int activity_details=0x7f040018;
         public static final int activity_main=0x7f040019;
-        public static final int fragment_detail=0x7f040020;
         public static final int fragment_detail_wide=0x7f04001a;
         public static final int fragment_details=0x7f04001b;
         public static final int fragment_main=0x7f04001c;
