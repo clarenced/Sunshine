@@ -9,8 +9,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
 
 import com.example.android.sunshine.app.data.WeatherContract;
 
@@ -55,7 +53,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         BufferedReader reader = null;
 
         // Will contain the raw JSON response as a string.
-        String forecastJsonStr = null;
+        String forecastJsonStr;
         String format = "json";
         String units = "metric";
         int numDays = 14;
@@ -220,7 +218,6 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
             // into something human-readable, since most people won't read "1400356800" as
             // "this saturday".
             dateTime = dayForecast.getLong(OWM_DATETIME);
-            day = getReadableDateString(dateTime);
 
             // description is in a child array called "weather", which is 1 element long.
             JSONObject weatherObject = dayForecast.getJSONArray(OWM_WEATHER).getJSONObject(0);
@@ -256,7 +253,6 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
                 Log.v(LOG_TAG, "inserted " + rowsInserted + " rows of weather data");
             }
 
-            highAndLow = formatHighLows(high, low);
             day = getReadableDateString(dateTime);
 
 

@@ -1,6 +1,5 @@
 package com.example.android.sunshine.app;
 
-import android.util.JsonReader;
 import android.util.Log;
 
 import org.json.JSONArray;
