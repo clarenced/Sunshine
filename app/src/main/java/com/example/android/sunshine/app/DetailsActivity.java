@@ -8,8 +8,6 @@ import android.view.MenuItem;
 
 public class DetailsActivity extends ActionBarActivity {
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,9 +15,7 @@ public class DetailsActivity extends ActionBarActivity {
         if (savedInstanceState == null) {
 
             final String date = getIntent().getStringExtra(DetailsFragment.DATE_KEY);
-
             final DetailsFragment fragment = DetailsFragment.newFragment(date);
-
 
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.weather_detail_container, fragment)

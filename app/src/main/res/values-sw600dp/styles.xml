@@ -4,9 +4,11 @@
         <item name="actionBarStyle">@style/ActionBar.Solid.Sunshine</item>
     </style>
 
-    <style name="ForecastListStyle"></style>
+    <style name="ForecastListStyle">
+        <item name="android:choiceMode">singleChoice</item>
+    </style>
 
-   <!-- <style name="ActionBar.Solid.Sunshine" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+    <!--<style name="ActionBar.Solid.Sunshine" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
         <item name="background">@color/sunshine_blue</item>
     </style>
 

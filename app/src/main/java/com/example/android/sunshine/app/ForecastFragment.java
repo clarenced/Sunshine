@@ -100,50 +100,23 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         // Loader and use it to populate the ListView it's attached to.
         mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
         //mForecastAdapter.setUseOfToday(mUseOfToday);
-        if(savedInstanceState != null && savedInstanceState.containsKey(CURRENT_POSITION)){
-            mPosition = savedInstanceState.getInt(CURRENT_POSITION);
-        }
-
-       /* mForecastAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
-            @Override
-            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-                boolean isMetric = Utility.isMetric(getActivity());
-                switch (columnIndex){
-                    case COL_WEATHER_MAX_TEMP:
-                    case COL_WEATHER_MIN_TEMP:
-                        ((TextView)view).setText(Utility.formatTemperature(cursor.getDouble(columnIndex), isMetric));
-                        return true;
-                    case COL_WEATHER_DATE: {
-                        String dateString = cursor.getString(columnIndex);
-                        TextView dateView = (TextView) view;
-                        dateView.setText(Utility.formatDate(dateString));
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });*/
-
 
         listView.setAdapter(mForecastAdapter);
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final Adapter adapter = parent.getAdapter();
-                final ForecastAdapter cursorAdapter = (ForecastAdapter) adapter;
-                final Cursor cursor = cursorAdapter.getCursor();
+                final Cursor cursor = mForecastAdapter.getCursor();
 
                 if(null != cursor && cursor.moveToPosition(position)){
-                    /*Intent intent = new Intent(getActivity(), DetailsActivity.class);
-                    intent.putExtra(DetailsFragment.DATE_KEY, cursor.getString(COL_WEATHER_DATE));
-                    //intent.putExtra(Intent.EXTRA_TEXT, forecast);
-                    startActivity(intent);*/
                     mPosition = position;
                     ((Callback)getActivity()).onItemSelected(cursor.getString(COL_WEATHER_DATE));
                 }
             }
         });
+
+        if(savedInstanceState != null && savedInstanceState.containsKey(CURRENT_POSITION)){
+            mPosition = savedInstanceState.getInt(CURRENT_POSITION);
+        }
         return rootView;
     }
 
