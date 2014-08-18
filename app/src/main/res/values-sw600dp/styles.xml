@@ -8,7 +8,7 @@
         <item name="android:choiceMode">singleChoice</item>
     </style>
 
-    <!--<style name="ActionBar.Solid.Sunshine" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+    <style name="ActionBar.Solid.Sunshine" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
         <item name="background">@color/sunshine_blue</item>
     </style>
 
@@ -19,6 +19,6 @@
     <style name="ActionBar.Solid.Sunshine.NoTitle" parent="@style/ActionBar.Solid.Sunshine">
         <item name="displayOptions">useLogo|showHome</item>
         <item name="logo">@drawable/ic_logo</item>
-    </style>-->
+    </style>
 
 </resources>

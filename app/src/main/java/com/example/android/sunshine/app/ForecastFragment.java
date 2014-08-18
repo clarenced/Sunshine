@@ -99,7 +99,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         // The SimpleCursorAdapter will take data from the database through the
         // Loader and use it to populate the ListView it's attached to.
         mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
-        //mForecastAdapter.setUseOfToday(mUseOfToday);
+        mForecastAdapter.setUseTodayLayout(mUseTodayLayout);
 
         listView.setAdapter(mForecastAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
