@@ -4,6 +4,9 @@ package com.example.android.sunshine.app;
  * Created by formation on 01/08/14.
  */
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -14,17 +17,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.android.sunshine.app.data.WeatherContract;
+import com.example.android.sunshine.app.service.SunshineService;
 
 import java.util.Date;
 
@@ -72,6 +76,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     private static final String CURRENT_POSITION = "CURRENT_POSITION";
     private ListView listView;
+    private static final String LOG_TAG = ForecastFragment.class.getSimpleName();
 
     public ForecastFragment() {
     }
@@ -169,6 +174,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         super.onActivityCreated(savedInstanceState);
     }
 
+    /*
     private void updateWeather(){
         final FetchWeatherTask fetchWeatherTask = new FetchWeatherTask(getActivity());
         final SharedPreferences defaultSharedPreferences =
@@ -176,6 +182,23 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         String location = defaultSharedPreferences.getString(getString(R.string.pref_location_key),
                 getString(R.string.pref_location_default_value));
         fetchWeatherTask.execute(location);
+    }
+    */
+
+    private void updateWeather(){
+        Log.i(LOG_TAG, "Updating weather ...");
+
+        Intent alarmIntent = new Intent(getActivity(), SunshineService.AlarmReceiver.class);
+        alarmIntent.putExtra(SunshineService.LOCATION_PARAM, mLocation);
+        final PendingIntent pendingIntent = PendingIntent
+                .getBroadcast(getActivity(), 0, alarmIntent, PendingIntent.FLAG_ONE_SHOT);
+
+        final AlarmManager alarmService = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
+        alarmService.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, pendingIntent);
+
+        /*Intent intent = new Intent(getActivity(), SunshineService.class);
+        intent.putExtra(SunshineService.LOCATION_PARAM, location);
+        getActivity().startService(intent);*/
     }
 
 
