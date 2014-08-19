@@ -813,13 +813,16 @@ containing a value of this type.
         public static final int abc_split_action_bar_is_narrow=0x7f080005;
     }
     public static final class color {
-        public static final int abc_search_url_text_holo=0x7f090006;
+        public static final int abc_search_url_text_holo=0x7f090009;
         public static final int abc_search_url_text_normal=0x7f090000;
         public static final int abc_search_url_text_pressed=0x7f090001;
         public static final int abc_search_url_text_selected=0x7f090002;
         public static final int grey=0x7f090003;
-        public static final int sunshine_blue=0x7f090004;
-        public static final int sunshine_light_blue=0x7f090005;
+        public static final int sunshine_black=0x7f090004;
+        public static final int sunshine_blue=0x7f090005;
+        public static final int sunshine_light_blue=0x7f090006;
+        public static final int sunshine_low_color=0x7f090007;
+        public static final int sunshine_white=0x7f090008;
     }
     public static final class dimen {
         public static final int abc_action_bar_default_height=0x7f0b0000;

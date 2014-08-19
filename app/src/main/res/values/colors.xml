@@ -4,5 +4,8 @@
     <color name="grey">#cccccc</color>
     <color name="sunshine_light_blue">#ff64c2f4</color>
     <color name="sunshine_blue">#ff1ca8f4</color>
+    <color name="sunshine_white">#ffffff</color>
+    <color name="sunshine_low_color">#646464</color>
+    <color name="sunshine_black">#000000</color>
 
 </resources>
