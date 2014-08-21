@@ -1102,27 +1102,29 @@ containing a value of this type.
         public static final int abc_shareactionprovider_share_with_application=0x7f0d000c;
         public static final int action_settings=0x7f0d000d;
         public static final int app_name=0x7f0d000e;
-        public static final int format_full_friendly_date=0x7f0d000f;
-        public static final int format_humidity=0x7f0d0010;
-        public static final int format_pressure=0x7f0d0011;
-        public static final int format_temperature=0x7f0d0012;
-        public static final int format_wind_kmh=0x7f0d0013;
-        public static final int format_wind_mph=0x7f0d0014;
-        public static final int hello_world=0x7f0d0015;
-        public static final int menu_share=0x7f0d0016;
-        public static final int pref_location_default_value=0x7f0d0017;
-        public static final int pref_location_key=0x7f0d0018;
-        public static final int pref_location_label=0x7f0d0019;
-        public static final int pref_unit_default_value=0x7f0d001a;
-        public static final int pref_unit_imperial=0x7f0d001b;
-        public static final int pref_unit_key=0x7f0d001c;
-        public static final int pref_unit_metric=0x7f0d001d;
-        public static final int pref_unit_title=0x7f0d001e;
-        public static final int refresh=0x7f0d001f;
-        public static final int show_preferred_location=0x7f0d0020;
-        public static final int title_activity_details=0x7f0d0021;
-        public static final int today=0x7f0d0022;
-        public static final int tomorrow=0x7f0d0023;
+        public static final int content_authority=0x7f0d000f;
+        public static final int format_full_friendly_date=0x7f0d0010;
+        public static final int format_humidity=0x7f0d0011;
+        public static final int format_pressure=0x7f0d0012;
+        public static final int format_temperature=0x7f0d0013;
+        public static final int format_wind_kmh=0x7f0d0014;
+        public static final int format_wind_mph=0x7f0d0015;
+        public static final int hello_world=0x7f0d0016;
+        public static final int menu_share=0x7f0d0017;
+        public static final int pref_location_default_value=0x7f0d0018;
+        public static final int pref_location_key=0x7f0d0019;
+        public static final int pref_location_label=0x7f0d001a;
+        public static final int pref_unit_default_value=0x7f0d001b;
+        public static final int pref_unit_imperial=0x7f0d001c;
+        public static final int pref_unit_key=0x7f0d001d;
+        public static final int pref_unit_metric=0x7f0d001e;
+        public static final int pref_unit_title=0x7f0d001f;
+        public static final int refresh=0x7f0d0020;
+        public static final int show_preferred_location=0x7f0d0021;
+        public static final int sync_account_type=0x7f0d0022;
+        public static final int title_activity_details=0x7f0d0023;
+        public static final int today=0x7f0d0024;
+        public static final int tomorrow=0x7f0d0025;
     }
     public static final class style {
         public static final int ActionBar_Solid_Sunshine=0x7f0e0000;
@@ -1271,7 +1273,9 @@ containing a value of this type.
         public static final int Widget_AppCompat_Spinner_DropDown_ActionBar=0x7f0e008c;
     }
     public static final class xml {
-        public static final int pref_general=0x7f060000;
+        public static final int authenticator=0x7f060000;
+        public static final int pref_general=0x7f060001;
+        public static final int syncadapter=0x7f060002;
     }
     public static final class styleable {
         /** Attributes that can be used with a ActionBar.

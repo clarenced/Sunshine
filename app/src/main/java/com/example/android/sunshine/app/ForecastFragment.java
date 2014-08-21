@@ -4,9 +4,6 @@ package com.example.android.sunshine.app;
  * Created by formation on 01/08/14.
  */
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -17,7 +14,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,7 +24,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.android.sunshine.app.data.WeatherContract;
-import com.example.android.sunshine.app.service.SunshineService;
+import com.example.android.sunshine.app.sync.SunshineSyncAdapter;
 
 import java.util.Date;
 
@@ -186,7 +182,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     */
 
     private void updateWeather(){
-        Log.i(LOG_TAG, "Updating weather ...");
+       /* Log.i(LOG_TAG, "Updating weather ...");
 
         Intent alarmIntent = new Intent(getActivity(), SunshineService.AlarmReceiver.class);
         alarmIntent.putExtra(SunshineService.LOCATION_PARAM, mLocation);
@@ -194,11 +190,12 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                 .getBroadcast(getActivity(), 0, alarmIntent, PendingIntent.FLAG_ONE_SHOT);
 
         final AlarmManager alarmService = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
-        alarmService.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, pendingIntent);
+        alarmService.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, pendingIntent);*/
 
         /*Intent intent = new Intent(getActivity(), SunshineService.class);
         intent.putExtra(SunshineService.LOCATION_PARAM, location);
         getActivity().startService(intent);*/
+        SunshineSyncAdapter.syncImmediately(getActivity());
     }
 
 
